@@ -1,0 +1,26 @@
+from pydantic import BaseModel, Field
+from typing import Optional, Dict
+
+class AFEvent(BaseModel):
+    app_id: str = Field(..., description="App ID AppsFlyer")
+    event_name: str = Field(..., description="")
+    event_time: str = Field(..., description="")
+    idfa: Optional[str] = Field(None, description="Commercial ID (iOS)")
+    advertising_id: Optional[str] = Field(None, description="Commercial ID (Android)")
+    app_version: Optional[str] = Field(None, description="")
+    sdk_version: Optional[str] = Field(None, description="")
+    app_name: Optional[str] = Field(None, description="")
+    bundle_id: Optional[str] = Field(None, description="")
+    platform: Optional[str] = Field(None, description="(iOS, Android)")
+    os_version: Optional[str] = Field(None, description="")
+    install_time: Optional[str] = Field(None, description="")
+    appsflyer_id: Optional[str] = Field(None, description="ID AppsFlyer SDK")
+    customer_user_id: Optional[str] = Field(None, description="login_clean")
+    event_value: Optional[Dict] = Field(None, description="JSON")
+    ip: Optional[str] = Field(None, description="")
+    wifi: Optional[bool] = Field(None, description="")
+    operator: Optional[str] = Field(None, description="")
+    install_app_store: Optional[str] = Field(None, description="source store (google, ios, rustore, etc")
+    region: Optional[str] = Field(None, description="")
+    country_code: Optional[str] = Field(None, description="")
+    city: Optional[str] = Field(None, description="")
