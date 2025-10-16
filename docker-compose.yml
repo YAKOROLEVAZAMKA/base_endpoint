@@ -1,0 +1,23 @@
+services:
+  af_monitoring_api:
+    image: af_monitoring_api:latest
+    container_name: af_monitoring_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8091:8091"
+    restart: always
+    networks:
+      - monitoring_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8091/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  monitoring_net:
+    driver: bridge
