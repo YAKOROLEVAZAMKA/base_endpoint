@@ -11,6 +11,7 @@ from loader import load_to_pg
 app = FastAPI(title="Appsflyer Events API", version="1.0.0")
 
 event_buffer = Queue()
+background_tasks: set[asyncio.Task] = set()  # контейнер
 
 
 @app.post("/api/af-event")
@@ -49,9 +50,15 @@ async def process_buffer():
 
 @app.on_event("startup")
 async def startup_event():
-    asyncio.create_task(process_buffer())
+    task = asyncio.create_task(process_buffer())
+    background_tasks.add(task)
+    task.add_done_callback(background_tasks.discard)  # удаление после завершения
 
 
 @app.get("/health")
 async def health():
-    return {"status": "OK", "buffer_size": event_buffer.qsize()}
+    return {
+        "status": "OK",
+        "buffer_size": event_buffer.qsize(),
+        "background_tasks": len(background_tasks),
+    }
